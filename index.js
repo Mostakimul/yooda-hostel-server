@@ -144,9 +144,6 @@ async function run() {
       const id = req.params.id;
       const updatedStudent = req.body;
 
-      console.log('ID', id);
-      console.log('updatedStudent', updatedStudent);
-
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = {
