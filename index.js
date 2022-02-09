@@ -130,6 +130,41 @@ async function run() {
       });
       res.send(result);
     });
+
+    // fetch single student
+    app.get('/students/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await studentCollection.findOne(query);
+      res.json(result);
+    });
+
+    // Edit student
+    app.put('/students/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedStudent = req.body;
+
+      console.log('ID', id);
+      console.log('updatedStudent', updatedStudent);
+
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          fullName: updatedStudent.fullName,
+          roll: updatedStudent.roll,
+          age: updatedStudent.age,
+          stclass: updatedStudent.stclass,
+          status: updatedStudent.status,
+        },
+      };
+      const result = await studentCollection.updateOne(
+        filter,
+        updateDoc,
+        options,
+      );
+      res.send(result);
+    });
   } finally {
     // await client.close();
   }
