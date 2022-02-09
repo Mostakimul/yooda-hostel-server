@@ -107,6 +107,29 @@ async function run() {
       });
       res.json(result);
     });
+
+    // Change student status
+    app.post('/status', async (req, res) => {
+      const idArray = req.body;
+      let result;
+
+      idArray.forEach(async (st) => {
+        let newArr = st.split(',');
+        const filter = { _id: ObjectId(newArr[0]) };
+        const options = { upsert: true };
+
+        let newStat = newArr[1] === 'active' ? 'inActive' : 'active';
+        console.log(newStat);
+
+        const updateDoc = {
+          $set: {
+            status: newStat,
+          },
+        };
+        result = await studentCollection.updateOne(filter, updateDoc, options);
+      });
+      res.send(result);
+    });
   } finally {
     // await client.close();
   }
