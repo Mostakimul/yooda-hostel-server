@@ -95,6 +95,18 @@ async function run() {
       const result = await studentCollection.deleteOne(query);
       res.json(result);
     });
+
+    // Delete multiple students
+    app.post('/multi', async (req, res) => {
+      const idArray = req.body;
+
+      let result;
+      idArray.forEach(async (id) => {
+        const query = { _id: ObjectId(id) };
+        result = await studentCollection.deleteOne(query);
+      });
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
