@@ -56,6 +56,13 @@ async function run() {
         count,
       });
     });
+
+    // Save students to mongo
+    app.post('/students', async (req, res) => {
+      const students = req.body;
+      const result = await studentCollection.insertOne(students);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
