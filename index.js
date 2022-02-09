@@ -63,6 +63,30 @@ async function run() {
       const result = await studentCollection.insertOne(students);
       res.json(result);
     });
+
+    // Fetch all students
+    app.get('/students', async (req, res) => {
+      const cursor = studentCollection.find({});
+      const count = await cursor.count();
+
+      const page = req.query.page;
+      const size = parseInt(req.query.size);
+
+      let result;
+      if (page) {
+        result = await cursor
+          .skip(page * size)
+          .limit(size)
+          .toArray();
+      } else {
+        result = await cursor.toArray();
+      }
+
+      res.json({
+        result,
+        count,
+      });
+    });
   } finally {
     // await client.close();
   }
