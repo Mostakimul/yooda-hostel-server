@@ -25,6 +25,19 @@ async function run() {
     const foodCollection = database.collection('foodItem');
     const studentCollection = database.collection('student');
     const distributionCollection = database.collection('distribution');
+
+    // Save food to mongo
+    app.post('/foods', async (req, res) => {
+      const foods = req.body;
+      const result = await foodCollection.insertOne(foods);
+      res.json(result);
+    });
+
+    // Fetch all foods
+    app.get('/foods', async (req, res) => {
+      const result = await foodCollection.find({}).toArray();
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
