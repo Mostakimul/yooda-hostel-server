@@ -35,8 +35,26 @@ async function run() {
 
     // Fetch all foods
     app.get('/foods', async (req, res) => {
-      const result = await foodCollection.find({}).toArray();
-      res.json(result);
+      const cursor = foodCollection.find({});
+      const count = await cursor.count();
+
+      const page = req.query.page;
+      const size = parseInt(req.query.size);
+
+      let result;
+      if (page) {
+        result = await cursor
+          .skip(page * size)
+          .limit(size)
+          .toArray();
+      } else {
+        result = await cursor.toArray();
+      }
+
+      res.json({
+        result,
+        count,
+      });
     });
   } finally {
     // await client.close();
