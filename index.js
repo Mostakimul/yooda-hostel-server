@@ -87,6 +87,14 @@ async function run() {
         count,
       });
     });
+
+    // Delete a students
+    app.delete('/students/:id', async (req, res) => {
+      const stdId = req.params.id;
+      const query = { _id: ObjectId(stdId) };
+      const result = await studentCollection.deleteOne(query);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
