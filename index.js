@@ -181,6 +181,14 @@ async function run() {
       const result = await distributionCollection.insertOne(serveData);
       res.json(result);
     });
+
+    // Delete a food
+    app.delete('/food/:id', async (req, res) => {
+      const stdId = req.params.id;
+      const query = { _id: ObjectId(stdId) };
+      const result = await foodCollection.deleteOne(query);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
