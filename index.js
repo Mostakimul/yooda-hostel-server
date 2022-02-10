@@ -33,6 +33,14 @@ async function run() {
       res.json(result);
     });
 
+    // fetch single food
+    app.get('/foods/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await foodCollection.findOne(query);
+      res.json(result);
+    });
+
     // Fetch all foods
     app.get('/foods', async (req, res) => {
       const cursor = foodCollection.find({});
