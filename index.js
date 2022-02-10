@@ -41,6 +41,23 @@ async function run() {
       res.json(result);
     });
 
+    // Edit single food
+    app.put('/foods/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedFood = req.body;
+
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          foodName: updatedFood.fullName,
+          foodPrice: updatedFood.foodPrice,
+        },
+      };
+      const result = await foodCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+
     // Fetch all foods
     app.get('/foods', async (req, res) => {
       const cursor = foodCollection.find({});
