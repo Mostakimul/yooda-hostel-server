@@ -50,7 +50,7 @@ async function run() {
       const options = { upsert: true };
       const updateDoc = {
         $set: {
-          foodName: updatedFood.fullName,
+          foodName: updatedFood.foodName,
           foodPrice: updatedFood.foodPrice,
         },
       };
