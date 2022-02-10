@@ -162,6 +162,25 @@ async function run() {
       );
       res.send(result);
     });
+
+    // Search distribution
+    app.post('/distribution', async (req, res) => {
+      const { id, shift, date } = req.body;
+      const query = {
+        studentId: id,
+        shift: shift,
+        date: date,
+      };
+      const result = await distributionCollection.findOne(query);
+      res.json(result);
+    });
+
+    // Add food distribution
+    app.post('/distribution-food', async (req, res) => {
+      const serveData = req.body;
+      const result = await distributionCollection.insertOne(serveData);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
